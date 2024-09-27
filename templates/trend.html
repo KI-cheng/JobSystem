@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block title %}数据趋势图{% endblock %}
+
+{% block content %}
+
+	<section id="main-content">
+		<section class="wrapper">
+			<div class="row">
+				<div class="panel-body">
+					<div class="col-md-12 w3ls-graph">
+						<div class="agileinfo-grap">
+							<div>
+								<h1 class="page-header">数据趋势图</h1>
+								<div style="height:750px;;width:1400px;z-index: 200;" id="trend"></div>
+
+								<script type="text/javascript">
+                                    $(function (ec) {
+                                        // 基于准备好的dom，初始化echarts实例
+                                        var myChart = echarts.init(document.getElementById('trend'));
+                                        // 指定图表的配置项和数据
+                                        var option = {
+                                            title: {
+                                                text: '近期变化趋势',
+                                            },
+                                            tooltip: {
+                                                trigger: 'axis'
+                                            },
+                                            legend: {
+                                                data: ['平均薪资', '职位数量']
+                                            },
+                                            toolbox: {
+                                                show: true,
+                                                itemGap: 15,
+                                                showTitle: true,
+                                                feature: {
+
+                                                    magicType: {
+                                                        show: true,
+                                                        title: {
+                                                            line: '切换为折线图',
+                                                            bar: '切换为柱状图',
+                                                            stack: '堆积',
+                                                            tiled: '平铺'
+                                                        },
+                                                        type: ['line', 'bar', 'stack', 'tiled']
+                                                    },
+                                                    restore: {show: true, title: '重置'},
+                                                    saveAsImage: {show: true, title: '保存到本地'}
+                                                }
+                                            },
+                                            xAxis: {
+                                                type: 'category',
+                                                boundaryGap: false,
+                                                data: {{ trend_time | tojson }}
+                                            },
+                                            yAxis: {
+                                                type: 'value',
+                                                axisLabel: {
+                                                    formatter: '{value}'
+                                                }
+                                            },
+                                            series: [
+                                                {
+                                                    name: '平均薪资',
+                                                    type: 'line',
+                                                    data: {{ trend_salary | tojson }},
+                                                    barGap: 0,
+                                                    markPoint: {
+                                                        data: [
+                                                            {type: 'max', name: '最大值'},
+                                                            {type: 'min', name: '最小值'}
+                                                        ]
+                                                    },
+                                                },
+                                                {
+                                                    name: '职位数量',
+                                                    type: 'line',
+                                                    data: {{ trend_position | tojson }},
+                                                    markPoint: {
+                                                        data: [
+                                                            {type: 'max', name: '最大值'},
+                                                            {type: 'min', name: '最小值'}
+                                                        ]
+                                                    },
+                                                    markLine: {
+                                                        data: [
+                                                            {type: 'average', name: '平均值'}
+                                                        ]
+                                                    }
+                                                }
+                                            ]
+                                        };
+
+                                        // 使用刚指定的配置项和数据显示图表。
+                                        myChart.setOption(option);
+                                        window.onresize = myChart.resize;
+
+                                        myChart.on('click', function (param) {
+                                            var name = param.name
+                                            if (name != '最大值' && name != '最小值')
+                                                window.location.href = "/accurate_table?type=publish_date&context=" + name;
+
+                                        })
+                                    });
+								</script>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</section>
+
+{% endblock %}

@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block title %}企业类型规模与薪资{% endblock %}
+
+{% block content %}
+
+	<section id="main-content">
+		<section class="wrapper">
+			<div class="row">
+				<div class="panel-body">
+					<div class="col-md-12 w3ls-graph">
+						<div class="agileinfo-grap">
+							<div>
+								<h1 class="page-header">企业类型规模与薪资</h1>
+								<hr>
+								<div style="height:750px;;width:1400px;z-index: 9998;" id="trend"></div>
+								<script type="text/javascript">
+                                    $(function (ec) {
+                                        // 基于准备好的dom，初始化echarts实例
+                                        var myChart = echarts.init(document.getElementById('trend'));
+
+                                        option = {
+                                            legend: {},
+                                            tooltip: {
+                                                trigger: 'axis',
+                                                showContent: false
+                                            },
+                                            dataset: {
+                                                source: {{ company | tojson }}
+                                            },
+                                            xAxis: {type: 'category'},
+                                            yAxis: {gridIndex: 0},
+                                            grid: {top: '55%'},
+                                            series: [
+                                                {
+                                                    type: 'line',
+                                                    smooth: true,
+                                                    seriesLayoutBy: 'row',
+                                                    emphasis: {focus: 'series'}
+                                                },
+                                                {
+                                                    type: 'line',
+                                                    smooth: true,
+                                                    seriesLayoutBy: 'row',
+                                                    emphasis: {focus: 'series'}
+                                                },
+                                                {
+                                                    type: 'line',
+                                                    smooth: true,
+                                                    seriesLayoutBy: 'row',
+                                                    emphasis: {focus: 'series'}
+                                                },
+                                                {
+                                                    type: 'line',
+                                                    smooth: true,
+                                                    seriesLayoutBy: 'row',
+                                                    emphasis: {focus: 'series'}
+                                                },
+                                                {
+                                                    type: 'line',
+                                                    smooth: true,
+                                                    seriesLayoutBy: 'row',
+                                                    emphasis: {focus: 'series'}
+                                                },
+                                                {
+                                                    type: 'line',
+                                                    smooth: true,
+                                                    seriesLayoutBy: 'row',
+                                                    emphasis: {focus: 'series'}
+                                                },
+                                                {
+                                                    type: 'line',
+                                                    smooth: true,
+                                                    seriesLayoutBy: 'row',
+                                                    emphasis: {focus: 'series'}
+                                                },
+                                                {
+                                                    type: 'line',
+                                                    smooth: true,
+                                                    seriesLayoutBy: 'row',
+                                                    emphasis: {focus: 'series'}
+                                                },
+                                                {
+                                                    type: 'pie',
+                                                    id: 'pie',
+                                                    radius: '30%',
+                                                    center: ['50%', '25%'],
+                                                    emphasis: {
+                                                        focus: 'self'
+                                                    },
+                                                    label: {
+                                                        formatter: '{b}: {@tt}'
+                                                    },
+                                                    encode: {
+                                                        itemName: 'product',
+                                                        value: 'tt',
+                                                        tooltip: 'tt'
+                                                    }
+                                                }
+                                            ]
+                                        };
+                                        myChart.on('updateAxisPointer', function (event) {
+                                            const xAxisInfo = event.axesInfo[0];
+                                            if (xAxisInfo) {
+                                                const dimension = xAxisInfo.value + 1;
+                                                myChart.setOption({
+                                                    series: {
+                                                        id: 'pie',
+                                                        label: {
+                                                            formatter: '{b}: {@[' + dimension + ']}'
+                                                        },
+                                                        encode: {
+                                                            value: dimension,
+                                                            tooltip: dimension
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        });
+                                        myChart.setOption(option);
+                                    })
+								</script>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</section>
+
+{% endblock %}

@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+
+{% block title %}招聘信息分析系统{% endblock %}
+
+{% block content %}
+	<section id="main-content">
+		<section class="wrapper">
+			<!-- //market-->
+			<div class="market-updates">
+				<div class="col-md-3 market-update-gd">
+					<div class="market-update-block clr-block-2">
+						<div class="col-md-4 market-update-right">
+							<i class="fa fa-eye"> </i>
+						</div>
+						<div class="col-md-8 market-update-left">
+							<h4>今日新增职位</h4>
+							<h3>{{ new_jobs }}</h3>
+							<p>{{ today }}</p>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+				<div class="col-md-3 market-update-gd">
+					<div class="market-update-block clr-block-1">
+						<div class="col-md-4 market-update-right">
+							<i class="fa fa-users"></i>
+						</div>
+						<div class="col-md-8 market-update-left">
+							<h4>系统职位总数</h4>
+							<h3>{{ all_jobs }}</h3>
+							<p>持续更新中...</p>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+				<div class="col-md-3 market-update-gd">
+					<div class="market-update-block clr-block-3">
+						<div class="col-md-4 market-update-right">
+							<i class="fa fa-usd"></i>
+						</div>
+						<div class="col-md-8 market-update-left">
+							<h4>热门行业占比</h4>
+							<h3>{{ ratio }}</h3>
+							<p>{{ max_category }}</p>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+				<div class="col-md-3 market-update-gd">
+					<div class="market-update-block clr-block-4">
+						<div class="col-md-4 market-update-right">
+							<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+						</div>
+						<div class="col-md-8 market-update-left">
+							<h4>招聘企业总数</h4>
+							<h3>{{ cp }}个</h3>
+							<p>{{ max_category }}为主</p>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<!-- //market-->
+			<div class="row">
+				<div class="panel-body">
+					<div class="col-md-12 w3ls-graph">
+						<!--agileinfo-grap-->
+						<div class="agileinfo-grap">
+							<div class="agileits-box">
+								<header class="agileits-box-header clearfix">
+									<h3>职位与薪资变化趋势模型</h3>
+									<div class="toolbar">
+
+									</div>
+								</header>
+								<div class="agileits-box-body clearfix">
+									<div id="hero-area"></div>
+								</div>
+							</div>
+						</div>
+						<!--//agileinfo-grap-->
+
+					</div>
+				</div>
+			</div>
+
+			<!-- tasks -->
+			<div class="agile-last-grids">
+				<div class="col-md-7 agile-last-left agile-last-middle">
+					<div class="agile-last-grid" style="height: 528px">
+						<div class="area-grids-heading">
+
+						</div>
+						<div id="graph521" style="height:100%; width:100%"></div>
+						<script>
+                            var chartDom = document.getElementById('graph521');
+                            var myChart = echarts.init(chartDom, null, {
+                                renderer: 'svg'
+                            });
+                            var option;
+
+                            option = {
+                                tooltip: {
+                                    trigger: 'item',
+                                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                                },
+                                legend: {
+                                    data: ['不限', '专科及以上', '本科及以上', '硕士及以上', '博士及以上']
+                                },
+                                series: [
+                                    {
+                                        name: '平均薪资',
+                                        type: 'pie',
+                                        selectedMode: 'single',
+                                        radius: [0, '40%'],
+                                        itemStyle: {
+                                            borderRadius: 7
+                                        },
+                                        label: {
+                                            position: 'inner',
+                                            fontSize: 14
+                                        },
+                                        labelLine: {
+                                            show: false
+                                        },
+                                        data: {{ degree_salary | tojson }}
+                                    },
+                                    {
+                                        name: '职位数量',
+                                        type: 'pie',
+                                        radius: ['45%', '60%'],
+                                        itemStyle: {
+                                            borderRadius: 7
+                                        },
+                                        labelLine: {
+                                            length: 30
+                                        },
+                                        label: {
+                                            formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+                                            backgroundColor: '#ece4c8',
+                                            borderColor: '#e3c8b1',
+                                            borderWidth: 1,
+                                            borderRadius: 4,
+                                            rich: {
+                                                a: {
+                                                    color: '#211d1d',
+                                                    lineHeight: 22,
+                                                    align: 'center'
+                                                },
+                                                hr: {
+                                                    borderColor: '#8C8D8E',
+                                                    width: '100%',
+                                                    borderWidth: 1,
+                                                    height: 0
+                                                },
+                                                b: {
+                                                    color: '#4C5058',
+                                                    fontSize: 14,
+                                                    fontWeight: 'bold',
+                                                    lineHeight: 33
+                                                },
+                                                per: {
+                                                    color: '#fff',
+                                                    backgroundColor: '#d2d3a3',
+                                                    padding: [3, 4],
+                                                    borderRadius: 4
+                                                }
+                                            }
+                                        },
+                                        data:{{ degree_num |  tojson }}
+                                    }
+                                ]
+                            };
+
+                            option && myChart.setOption(option);
+						</script>
+					</div>
+				</div>
+				<div class="col-md-5 stats-info stats-last widget-shadow">
+					<div class="stats-last-agile">
+						<table class="table stats-table ">
+							<thead>
+							<tr>
+								<th>热度</th>
+								<th>热门行业</th>
+								<th>本月职位数量</th>
+								<th>较上月变化比例</th>
+							</tr>
+							</thead>
+							<tbody>
+							{{ industry_data | safe }}
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<div class="clearfix"></div>
+			</div>
+		</section>
+		<script>
+            $(document).ready(function () {
+                //BOX BUTTON SHOW AND CLOSE
+                jQuery('.small-graph-box').hover(function () {
+                    jQuery(this).find('.box-button').fadeIn('fast');
+                }, function () {
+                    jQuery(this).find('.box-button').fadeOut('fast');
+                });
+                jQuery('.small-graph-box .box-close').click(function () {
+                    jQuery(this).closest('.small-graph-box').fadeOut(200);
+                    return false;
+                });
+
+                //CHARTS
+                function gd(year, day, month) {
+                    return new Date(year, month - 1, day).getTime();
+                }
+
+                graphArea2 = Morris.Area({
+                    element: 'hero-area',
+                    padding: 10,
+                    behaveLikeLine: true,
+                    gridEnabled: false,
+                    gridLineColor: '#dddddd',
+                    axes: true,
+                    resize: true,
+                    smooth: true,
+                    pointSize: 0,
+                    lineWidth: 0,
+                    fillOpacity: 0.85,
+                    data:{{ trend_data | tojson }},
+                    lineColors: ['#eb6f6f', '#926383', '#eb6f6f'],
+                    xkey: 'period',
+                    redraw: true,
+                    ykeys: ['positions', 'salary'],
+                    labels: ['职位总数', '平均月薪'],
+                    pointSize: 2,
+                    hideHover: 'auto',
+                    resize: true
+                });
+
+
+            });
+		</script>
+	</section>
+{% endblock %}

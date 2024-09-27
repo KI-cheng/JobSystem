@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}数据总表{% endblock %}
+
+{% block content %}
+	<section id="main-content">
+		<section class="wrapper">
+			<div class="table-agile-info">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						职位信息查询
+					</div>
+					<div class="row w3-res-tb">
+						<form action="/accurate_table" method="GET">
+							<input name="TOKEN" value="1" style="display: none">
+							<div class="col-sm-1 m-b-xs">
+								<select class="input-sm form-control w-sm inline v-middle" name="degree">
+									<option value="" disabled selected>---学历要求---</option>
+									<option value="不限">不限</option>
+									<option value="专科及以上">专科及以上</option>
+									<option value="本科及以上">本科及以上</option>
+									<option value="硕士及以上">硕士及以上</option>
+									<option value="博士及以上">博士及以上</option>
+								</select>
+							</div>
+							<div class="col-sm-1 m-b-xs">
+								<select class="input-sm form-control w-sm inline v-middle" name="categories">
+									<option value="" disabled selected>---行业名称---</option>
+									<option value="计算机/网络/技术类">计算机/网络/技术类</option>
+									<option value="文体/影视/写作/媒体类">文体/影视/写作/媒体类</option>
+									<option value="财务/审计/统计类">财务/审计/统计类</option>
+									<option value="销售类">销售类</option>
+									<option value="人力资源类">人力资源类</option>
+									<option value="市场/公关/媒介类">市场/公关/媒介类</option>
+									<option value="医疗卫生/美容保健类">医疗卫生/美容保健类</option>
+									<option value="质量管理类">质量管理类</option>
+									<option value="客户服务类">客户服务类</option>
+									<option value="工厂生产类">工厂生产类</option>
+									<option value="贸易/物流/采购/运输类">贸易/物流/采购/运输类</option>
+									<option value="技工类">技工类</option>
+									<option value="行政/后勤类">行政/后勤类</option>
+									<option value="生物/制药/化工/环保类">生物/制药/化工/环保类</option>
+									<option value="建筑/房地产/装饰装修/物业管理类">建筑/房地产/装饰装修/物业管理类
+									</option>
+									<option value="经营管理类">经营管理类</option>
+									<option value="金融保险类">金融保险类</option>
+									<option value="酒店/餐饮/旅游/服务类">酒店/餐饮/旅游/服务类</option>
+									<option value="科研类">科研类</option>
+									<option value="法律类">法律类</option>
+									<option value="美术/设计/创意类">美术/设计/创意类</option>
+									<option value="电子/电器/通信技术类">电子/电器/通信技术类</option>
+									<option value="机械/仪器仪表类">机械/仪器仪表类</option>
+									<option value="咨询/顾问类">咨询/顾问类</option>
+									<option value="翻译类">翻译类</option>
+									<option value="教育/培训类">教育/培训类</option>
+									<option value="电气/能源/动力类">电气/能源/动力类</option>
+									<option value="商业零售类">商业零售类</option>
+								</select>
+							</div>
+							<div class="col-sm-1 m-b-xs">
+								<select class="input-sm form-control w-sm inline v-middle" name="area">
+									<option value="" disabled selected>---地区---</option>
+									{% for city in cities %}
+										<option value="{{ city }}">{{ city }}</option>
+									{% endfor %}
+
+								</select>
+							</div>
+							<div class="col-sm-1 m-b-xs">
+								<select class="input-sm form-control w-sm inline v-middle" name="source">
+									<option value="" disabled selected>---数据源---</option>
+									{% for name in source %}
+										<option value="{{ name }}">{{ name }}</option>
+									{% endfor %}
+								</select>
+							</div>
+
+							<div class="col-sm-1 m-b-xs">
+								<select class="input-sm form-control w-sm inline v-middle" name="type">
+									<option value="" disabled selected>---模糊查找关键字---</option>
+									<option value="job_name">职位</option>
+									<option value="salary">薪资</option>
+									<option value="company_name">公司名称</option>
+									<option value="publish_date">发布时间</option>
+									<option value="update_date">更新时间</option>
+								</select>
+							</div>
+							<div class="col-sm-5 m-b-xs">
+								<div class="input-group">
+									<input type="text" class="input-sm form-control" placeholder="Search"
+									       name="context">
+									<span class="input-group-btn">
+                                        <button class="btn btn-sm btn-default" type="submit" id="select_to_loading">查询！</button>
+                                    </span>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="table-responsive">
+						<table class="table table-striped b-t b-light">
+							<thead>
+							<tr>
+								<td>职位</td>
+								<td>薪资</td>
+								<td>学历要求</td>
+								<td>行业</td>
+								<td>招收人数</td>
+								<td>发布时间</td>
+								<td>更新时间</td>
+								<td>公司名称</td>
+								<td>地区</td>
+								<td>来源</td>
+							</tr>
+							</thead>
+							<tbody>
+							{% for item in table_data %}
+								<tr>
+									<td>{{ item[1] }}</td>
+									<td>{{ item[2] }}</td>
+									<td>{{ item[3] }}</td>
+									<td>{{ item[4] }}</td>
+									<td>{{ item[7] }}</td>
+									<td>{{ item[8] }}</td>
+									<td>{{ item[9] }}</td>
+									<td>{{ item[11] }}</td>
+									<td>{{ item[12] }}</td>
+									<td>{{ item[10] }}</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+
+
+					</div>
+					<footer class="panel-footer">
+						<div class="row">
+
+							<div class="col-sm-3 text-center">
+								<small class="text-muted inline m-t-sm m-b-sm">{{ pagination.info }}</small>
+							</div>
+							<div class="col-sm-9 text-right text-center-xs">
+								{{ pagination.links }}
+							</div>
+						</div>
+					</footer>
+				</div>
+			</div>
+		</section>
+	</section>
+	<script>
+        $('#select_to_loading').click(() => {
+                document.getElementById('loading').style = 'display:flex;'
+                setTimeout(() => {
+                    document.getElementById('loading').style = 'display:none;'
+                }, 10000)
+            }
+        )
+	</script>
+{% endblock %}

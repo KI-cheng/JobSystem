@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}实时数据监控{% endblock %}
+{% block style %}
+	<link rel="stylesheet" type="text/css" href="../static/css/barrager.css">
+	<link rel="stylesheet" type="text/css" href="../static/css/pick-a-color-1.2.3.min.css">
+	<link type="text/css" rel="stylesheet" href="../static/css/shCoreDefault.css"/>
+{% endblock %}
+
+{% block content %}
+	<section id="main-content"   style="height: 0px;height: 0px">
+		<section class="wrapper">
+			<div class="row" >
+				<div class="panel-body" >
+					<div class="col-md-12 w3ls-graph">
+						<div class="agileinfo-grap">
+							<div id="main"></div>
+							<script type="text/javascript" src="../static/js/tinycolor-0.9.15.min.js"></script>
+							<script type="text/javascript" src="../static/js/jquery.barrager.js"></script>
+							<script type="text/javascript" src="../static/js/shCore.js"></script>
+							<script type="text/javascript" src="../static/js/shBrushJScript.js"></script>
+							<script type="text/javascript" src="../static/js/shBrushPhp.js"></script>
+							<script type="text/javascript">
+                                //每条弹幕发送间隔
+                                var looper_time = 6 * 1000;
+                                //是否首次执行
+                                var run_once = true;
+                                do_barrager();
+
+                                function do_barrager() {
+                                    if (run_once) {
+                                        //如果是首次执行,则设置一个定时器,并且把首次执行置为false
+                                        looper = setInterval(do_barrager, looper_time);
+                                        run_once = false;
+                                    }
+                                    //获取
+                                    $.ajax({
+                                        cache: false,
+                                        type: "POST",
+                                        url: "/get_realtime_data",
+                                        data: null, // 发送的数据
+                                        dataType: "json",  //返回数据形式为json
+                                        async: false,
+                                        error: function (request) {
+                                           console.log("未找到今日数据")
+                                        },
+                                        success: function (result) {
+                                            console.log(result);
+                                            for (i = 0, max = result.data.length; i < max; i++) { //注意：result.data.length
+                                                $("#main-content").barrager(result.data[i]);
+                                            }
+                                        }
+                                    });
+                                }
+							</script>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</section>
+{% endblock %}
+

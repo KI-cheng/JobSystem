@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}词云统计{% endblock %}
+
+{% block content %}
+	<section id="main-content">
+		<section class="wrapper">
+			<div class="row">
+				<div class="panel-body">
+					<div class="col-md-12 w3ls-graph">
+						<div class="agileinfo-grap">
+							<!--右边展示-->
+							<div>
+								<h1 class="page-header">福利词云统计</h1>
+								<!--展示区-->
+								<!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+								<div style="height:800px;z-index: 200;" id="main">
+
+								</div>
+								<script src="../static/js/wordecharts.min.js" charset="utf-8"></script>
+								<script src="../static/js/echarts-wordcloud.min.js" charset="utf-8"></script>
+								<script type="text/javascript">
+                                    // 基于准备好的dom，初始化echarts实例
+                                    var myChart = echarts.init(document.getElementById('main'));
+                                    // 指定图表的配置项和数据
+                                    var option = {
+                                        title: {},
+                                        tooltip: {},
+                                        series: [{
+                                            name: '涉及岗位数量：',
+                                            type: 'wordCloud',
+                                            // 单词间隔的大小
+                                            gridSize: 30    ,
+                                            // 字体大小范围
+                                            sizeRange: [20, 80],
+                                            // 文字旋转角度范围
+                                            rotationRange: [0, 0],
+                                            // 自定义词云图形状
+                                            shape: 'circle',
+                                            textStyle: {
+                                                normal: {
+                                                    color: function () {
+                                                        return 'rgb(' + [
+                                                            Math.round(Math.random() * 160),
+                                                            Math.round(Math.random() * 160),
+                                                            Math.round(Math.random() * 160)
+                                                        ].join(',') + ')';
+                                                    }
+                                                },
+                                                emphasis: {
+                                                    shadowBlur: 10,
+                                                    shadowColor: '#333'
+                                                }
+                                            },
+                                            data:{{ cloud_data | tojson }},
+                                            left: 'center',
+                                            top: 'center',
+                                            width: '80%',
+                                            height: '80%',
+                                        }]
+                                    };
+
+                                    // 使用刚指定的配置项和数据显示图表。
+                                    myChart.setOption(option);
+								</script>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</section><
+{% endblock %}
