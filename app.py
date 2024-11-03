@@ -56,7 +56,7 @@ def home():
     # 曲线图标
     trend_data = utils.get_trend_data()
     # 行业发展（右下角）
-    industry_data = utils.get_industry_data()
+    # industry_data = utils.get_industry_data()
     # 学历要求
     degree_num, degree_salary = utils.get_degree_data()
     user = query.querys('select name from user where email = %s', [email], 'select')
@@ -70,7 +70,7 @@ def home():
         ratio=ratio,
         cp=cp,
         trend_data=trend_data,
-        industry_data=industry_data,
+        # industry_data=industry_data,
         degree_num=degree_num,
         degree_salary=degree_salary,
     )
